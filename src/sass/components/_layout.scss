@@ -20,3 +20,20 @@
     padding-left: 12px !important;
   }
 }
+
+.sideNav {
+  background: $slate_blue !important;
+  .sideNavItem {
+    border-bottom: 2px solid $diamond !important;
+    background: $space_cadet !important;
+    color: $diamond !important;
+    &:hover {
+      background: $diamond !important;
+      color: $space_cadet !important;
+    }
+  }
+
+  .iconText {
+    display: inline;
+  }
+}
