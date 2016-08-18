@@ -69,6 +69,9 @@ class Layout extends Component {
 
   switchComponent(link) {
     this.context.router.push(link)
+    if (this.props.showSideNav) {
+      this.toggleSideNav()
+    }
   }
 
 
@@ -112,6 +115,8 @@ class Layout extends Component {
 
         <Drawer
           open={this.props.showSideNav}
+          docked={false}
+          onRequestChange={() => this.toggleSideNav()}
           containerClassName='sideNav'
           >
           <MenuItem
