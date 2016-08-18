@@ -38,7 +38,6 @@ class Layout extends Component {
     if (dimensions < 450) {
       this.props.toggleTabs(false)
     } else {
-      console.log('in the else');
       if (this.props.showSideNav) {
         this.toggleSideNav()
       }
