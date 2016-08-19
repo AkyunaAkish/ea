@@ -1,0 +1,46 @@
+@import '../utils/variables';
+
+
+.authContainer {
+  padding-top: 85px;
+  .authForm {
+    display: table;
+    height: 78vh;
+    width: 70%;
+    margin: 0 auto;
+    .authTextField {
+      margin-left: 15%;
+    }
+  }
+  .authCard {
+    width: 70%;
+    margin: 0 auto;
+    text-align: center;
+    * {
+      background: $space_cadet !important;
+      color: $diamond !important;
+    }
+  }
+}
+
+.authButton {
+  margin-left: 15% !important;
+  * {
+    background: $space_cadet !important;
+    color: $diamond !important;
+    &:hover {
+      * {
+        color: white !important;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .authForm {
+    width: 90% !important;
+  }
+  .authCard {
+    width: 90% !important;
+  }
+}

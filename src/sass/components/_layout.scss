@@ -1,5 +1,14 @@
 @import '../utils/variables';
 
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+img, embed, object, video {
+  max-width: 100%;
+  height: auto;
+}
+
 .navBar {
   background: $slate_blue !important;
   .navLogo {
