@@ -16,7 +16,7 @@ class Layout extends Component {
     this.state = {
       initialTab: 0
     }
-
+    console.log("THIS PROPS LAYOUT", this.props);
     switch (this.props.location.pathname) {
       case '/':
       this.state.initialTab = 0
@@ -43,13 +43,19 @@ class Layout extends Component {
       }
       switch (this.props.location.pathname) {
         case '/':
-        this.state.initialTab = 0
+        this.setState({
+          initialTab: 0
+        })
         break
         case '/signin':
-        this.state.initialTab = 1
+        this.setState({
+          initialTab: 1
+        })
         break
         case '/signup':
-        this.state.initialTab = 2
+        this.setState({
+          initialTab: 2
+        })
         break
       }
       this.props.toggleTabs(true)
@@ -149,8 +155,8 @@ class Layout extends Component {
 
 function mapStateToProps(state) {
   return {
-    showTabs: state.material_ui.showTabs,
-    showSideNav: state.material_ui.showSideNav
+    showTabs: state.material_ui.get('showTabs'),
+    showSideNav: state.material_ui.get('showSideNav')
   }
 }
 

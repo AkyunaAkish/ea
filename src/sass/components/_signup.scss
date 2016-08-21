@@ -1,1 +1,10 @@
 @import '../utils/variables';
+
+.authForm {
+  .signUpCheckBox {
+    margin-left: 15% !important;
+    label {
+      width: 70% !important;
+    }
+  }
+}
