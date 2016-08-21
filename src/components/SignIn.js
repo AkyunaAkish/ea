@@ -34,7 +34,7 @@ const renderTextInput = (field) => {
 class SignIn extends Component {
 
   onSubmit(formData) {
-    console.log('FORM SIGN IN DATA!!!!', formData)
+    // console.log('FORM SIGN IN DATA!!!!', formData)
   }
 
   render() {

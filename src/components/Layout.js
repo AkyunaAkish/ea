@@ -16,7 +16,7 @@ class Layout extends Component {
     this.state = {
       initialTab: 0
     }
-    console.log("THIS PROPS LAYOUT", this.props);
+    
     switch (this.props.location.pathname) {
       case '/':
       this.state.initialTab = 0

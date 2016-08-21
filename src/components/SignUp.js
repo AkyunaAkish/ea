@@ -45,7 +45,7 @@ const renderCheckbox = ({ input, label }) => {
 class SignUp extends Component {
 
   onSubmit(formData) {
-    console.log('FORM SIGN UP DATA!!!!', formData)
+    // console.log('FORM SIGN UP DATA!!!!', formData)
   }
   componentWillMount() {
     this.props.changeFieldValue('notifications', true)
