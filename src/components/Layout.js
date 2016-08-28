@@ -14,22 +14,15 @@ class Layout extends Component {
   constructor(props) {
     super(props)
 
-    // this.state = {
-    //   currentTab: 0
-    // }
-
     switch (this.props.location.pathname) {
       case '/':
       this.props.setCurrentTab(0)
-      // this.state.currentTab = 0
       break
       case '/signin':
       this.props.setCurrentTab(1)
-      // this.state.currentTab = 1
       break
       case '/signup':
       this.props.setCurrentTab(2)
-      // this.state.currentTab = 2
       break
     }
   }
@@ -48,21 +41,12 @@ class Layout extends Component {
       switch (this.props.location.pathname) {
         case '/':
         this.props.setCurrentTab(0)
-        // this.setState({
-        //   currentTab: 0
-        // })
         break
         case '/signin':
         this.props.setCurrentTab(1)
-        // this.setState({
-        //   currentTab: 1
-        // })
         break
         case '/signup':
         this.props.setCurrentTab(2)
-        // this.setState({
-        //   currentTab: 2
-        // })
         break
       }
       this.props.toggleTabs(true)
@@ -76,29 +60,6 @@ class Layout extends Component {
     })
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.routerLocation !== nextProps.location.pathname) {
-  //     // nextProps.updateLocation(nextProps.location.pathname)
-  //     switch (this.props.location.pathname) {
-  //       case '/':
-  //       this.setState({
-  //         currentTab: 0
-  //       })
-  //       break
-  //       case '/signin':
-  //       this.setState({
-  //         currentTab: 1
-  //       })
-  //       break
-  //       case '/signup':
-  //       this.setState({
-  //         currentTab: 2
-  //       })
-  //       break
-  //     }
-  //   }
-  // }
-
   toggleSideNav() {
     this.props.toggleSideNav(!this.props.showSideNav)
   }
@@ -111,9 +72,6 @@ class Layout extends Component {
   }
 
   handleTabChange(tabValue) {
-    // this.setState({
-    //   currentTab: tabValue
-    // })
     this.props.setCurrentTab(tabValue)
   }
 
@@ -187,7 +145,9 @@ class Layout extends Component {
             SIGN UP
           </MenuItem>
         </Drawer>
+
         {this.props.children}
+
       </div>
     )
   }
