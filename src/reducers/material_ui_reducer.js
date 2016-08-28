@@ -15,7 +15,6 @@ export default function(state = initialState, action) {
     return { ...state, showSideNav: action.payload }
     break
     case SET_CURRENT_TAB:
-    console.log('SET CURRENT TAB:)', action.payload);
     return { ...state, currentTab: action.payload }
     break
   }

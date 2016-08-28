@@ -47,7 +47,6 @@ export function updateLocation(newLocation) {
 }
 
 export function setCurrentTab(currentTab) {
-  console.log('CURRENT TAB!!!', currentTab);
   return {
     type: SET_CURRENT_TAB,
     payload: currentTab
