@@ -60,7 +60,6 @@ router.post('/signUp', function(req, res, next) {
       if (Number(err.code) === 23505) {
         var uniqueViolationColumn = err.constraint.split('_')
         uniqueViolationColumn = uniqueViolationColumn[1]
-        console.log('IF CATCH ERR', err);
         res.status(200).json({ error: `${uniqueViolationColumn} already exists in the database` })
       } else {
         // any other type of knex error
