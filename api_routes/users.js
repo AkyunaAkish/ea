@@ -1,15 +1,15 @@
-const express = require('express')
-const router = express.Router()
-const knex = require('../db_config/knex')
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
+var express = require('express')
+var router = express.Router()
+var knex = require('../db_config/knex')
+var jwt = require('jsonwebtoken')
+var bcrypt = require('bcrypt')
 
-router.post('/signIn', (req, res, next) => {
+router.post('/signIn', function(req, res, next) {
   console.log('SIGNIN HIT', req.body);
   res.status(200).json({users: req.body})
 })
 
-router.post('/signUp', (req, res, next) => {
+router.post('/signUp', function(req, res, next) {
   // check that the request body has the correct properties defined with the correct data types
   if (
     req.body.username && typeof req.body.username === 'string'
@@ -18,9 +18,7 @@ router.post('/signUp', (req, res, next) => {
     && req.body.notifications && typeof req.body.notifications === 'boolean'
   ) {
     // hash the password before inserting into the database
-    const password_hash = bcrypt.hashSync(req.body.password, 10)
-
-    console.log('SIGNUP HIT IN FIRST IF', req.body);
+    var password_hash = bcrypt.hashSync(req.body.password, 10)
     // insert user into the database
     knex('users')
     .insert({
@@ -30,8 +28,7 @@ router.post('/signUp', (req, res, next) => {
       notifications: req.body.notifications
     })
     .returning('*')
-    .then((user) => {
-      console.log('user', user);
+    .then(function(user) {
       // if the user was inserted and returned by knex continue
       if (user[0]) {
         if (
@@ -41,8 +38,8 @@ router.post('/signUp', (req, res, next) => {
         ) {
           // prepare object to send back new user's info to the front end with jwt
           try {
-            const token = jwt.sign({ id: user[0].id }, process.env.SECRET)
-            const newUser = {
+            var token = jwt.sign({ id: user[0].id }, process.env.SECRET)
+            var newUser = {
               id: user[0].id,
               username: user[0].username,
               token: token
@@ -58,10 +55,10 @@ router.post('/signUp', (req, res, next) => {
         res.status(200).json({ error: 'An error occurred when attempting to sign you up' })
       }
     })
-    .catch((err) => {
+    .catch(function(err) {
       // if an error was thrown by knex with a uniqueness error code
       if (Number(err.code) === 23505) {
-        let uniqueViolationColumn = err.constraint.split('_')
+        var uniqueViolationColumn = err.constraint.split('_')
         uniqueViolationColumn = uniqueViolationColumn[1]
         console.log('IF CATCH ERR', err);
         res.status(200).json({ error: `${uniqueViolationColumn} already exists in the database` })
