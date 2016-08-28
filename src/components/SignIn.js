@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
+import * as actions from '../actions'
 import {
   Paper,
   TextField,
@@ -32,11 +33,15 @@ const renderTextInput = (field) => {
 }
 
 class SignIn extends Component {
-
-  onSubmit(formData) {
-    // console.log('FORM SIGN IN DATA!!!!', formData)
+  constructor(props) {
+    super(props)
+    this.state = {}
   }
 
+  onSubmit(userData) {
+    this.props.signIn(userData)
+  }
+  
   render() {
     const { handleSubmit } = this.props
 
@@ -77,7 +82,7 @@ function validate(values) {
   return errors
 }
 
-export default connect(null, null)(reduxForm({
+export default connect(null, actions)(reduxForm({
   form: 'SignIn',
   fields: ['username', 'email', 'password', 'confirmpassword', 'notifications'],
   validate: validate

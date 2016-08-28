@@ -1,2 +1,6 @@
 export const TOGGLE_TABS = 'TOGGLE_TABS'
 export const TOGGLE_SIDE_NAV = 'TOGGLE_SIDE_NAV'
+export const SIGN_IN = 'SIGN_IN'
+export const SIGN_UP = 'SIGN_UP'
+export const UPDATE_LOCATION = 'UPDATE_LOCATION'
+export const SET_CURRENT_TAB = 'SET_CURRENT_TAB'

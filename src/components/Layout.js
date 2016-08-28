@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import * as actions from '../actions'
 import { connect } from 'react-redux'
+import { Router } from 'react-router'
 import {
   AppBar,
   Tabs,
@@ -13,19 +14,22 @@ class Layout extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      initialTab: 0
-    }
-    
+    // this.state = {
+    //   currentTab: 0
+    // }
+
     switch (this.props.location.pathname) {
       case '/':
-      this.state.initialTab = 0
+      this.props.setCurrentTab(0)
+      // this.state.currentTab = 0
       break
       case '/signin':
-      this.state.initialTab = 1
+      this.props.setCurrentTab(1)
+      // this.state.currentTab = 1
       break
       case '/signup':
-      this.state.initialTab = 2
+      this.props.setCurrentTab(2)
+      // this.state.currentTab = 2
       break
     }
   }
@@ -43,19 +47,22 @@ class Layout extends Component {
       }
       switch (this.props.location.pathname) {
         case '/':
-        this.setState({
-          initialTab: 0
-        })
+        this.props.setCurrentTab(0)
+        // this.setState({
+        //   currentTab: 0
+        // })
         break
         case '/signin':
-        this.setState({
-          initialTab: 1
-        })
+        this.props.setCurrentTab(1)
+        // this.setState({
+        //   currentTab: 1
+        // })
         break
         case '/signup':
-        this.setState({
-          initialTab: 2
-        })
+        this.props.setCurrentTab(2)
+        // this.setState({
+        //   currentTab: 2
+        // })
         break
       }
       this.props.toggleTabs(true)
@@ -69,6 +76,29 @@ class Layout extends Component {
     })
   }
 
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.routerLocation !== nextProps.location.pathname) {
+  //     // nextProps.updateLocation(nextProps.location.pathname)
+  //     switch (this.props.location.pathname) {
+  //       case '/':
+  //       this.setState({
+  //         currentTab: 0
+  //       })
+  //       break
+  //       case '/signin':
+  //       this.setState({
+  //         currentTab: 1
+  //       })
+  //       break
+  //       case '/signup':
+  //       this.setState({
+  //         currentTab: 2
+  //       })
+  //       break
+  //     }
+  //   }
+  // }
+
   toggleSideNav() {
     this.props.toggleSideNav(!this.props.showSideNav)
   }
@@ -80,6 +110,12 @@ class Layout extends Component {
     }
   }
 
+  handleTabChange(tabValue) {
+    // this.setState({
+    //   currentTab: tabValue
+    // })
+    this.props.setCurrentTab(tabValue)
+  }
 
   render() {
     const underLineStyle = {
@@ -97,21 +133,25 @@ class Layout extends Component {
           children={this.props.showTabs ? [
             <Tabs
               key={1}
-              initialSelectedIndex={this.state.initialTab}
               inkBarStyle={underLineStyle}
+              value={this.props.currentTab}
+              onChange={this.handleTabChange.bind(this)}
               >
               <Tab
                 label='BLOG'
+                value={0}
                 className='navTabs'
                 onClick={() => this.switchComponent('/')}
                 />
               <Tab
                 label='SIGN IN'
+                value={1}
                 className='navTabs'
                 onClick={() => this.switchComponent('/signin')}
                 />
               <Tab
                 label='SIGN UP'
+                value={2}
                 className='navTabs'
                 onClick={() => this.switchComponent('/signup')}
                 />
@@ -155,9 +195,19 @@ class Layout extends Component {
 
 function mapStateToProps(state) {
   return {
-    showTabs: state.material_ui.get('showTabs'),
-    showSideNav: state.material_ui.get('showSideNav')
+    showTabs: state.material_ui.showTabs,
+    showSideNav: state.material_ui.showSideNav,
+    routerLocation: state.location_reducer.routerLocation,
+    currentTab: state.material_ui.currentTab
   }
 }
 
-export default connect(mapStateToProps, actions)(Layout)
+function mapDispatchToProps(dispatch) {
+  return {
+    toggleSideNav: actions.toggleSideNav,
+    setCurrentTab: actions.setCurrentTab,
+    toggleTabs: actions.toggleTabs
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps())(Layout)
