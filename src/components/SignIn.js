@@ -40,8 +40,14 @@ class SignIn extends Component {
 
   onSubmit(userData) {
     this.props.signIn(userData)
+    .then((response) => {
+      console.log('RESPONSE..', response)
+    })
+    .catch((err) => {
+      console.log('Error when signing in')
+    })
   }
-  
+
   render() {
     const { handleSubmit } = this.props
 

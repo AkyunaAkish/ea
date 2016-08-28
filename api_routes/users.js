@@ -5,8 +5,31 @@ var jwt = require('jsonwebtoken')
 var bcrypt = require('bcrypt')
 
 router.post('/signIn', function(req, res, next) {
-  console.log('SIGNIN HIT', req.body);
-  res.status(200).json({users: req.body})
+  if (
+    req.body.email && typeof req.body.email === 'string'
+    && req.body.password && typeof req.body.password === 'string'
+  ) {
+    knex('users')
+    .where({
+      email: req.body.email
+    })
+    .first()
+    .then((user) => {
+      console.log('IN THEN', user)
+      if (user && bcrypt.compareSync(req.body.password, user.password)) {
+        var user_obj = {id: user.id, username: user.username}
+        var token = jwt.sign({ id: user.id}, process.env.SECRET)
+        res.status(200).json({token: token, user: user_obj})
+      } else if(user){
+        res.status(200).json({error: 'Email or password incorrect'})
+      } else {
+        res.status(200).json({error: `User with that email doensn\'t exist in the database`})
+      }
+    })
+    .catch((err) => {
+      res.status(200).json({error: `User with that email doensn\'t exist in the database: ${err}`})
+    })
+  }
 })
 
 router.post('/signUp', function(req, res, next) {
