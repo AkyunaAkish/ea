@@ -15,11 +15,15 @@ router.post('/signIn', function(req, res, next) {
     })
     .first()
     .then((user) => {
-      console.log('IN THEN', user)
       if (user && bcrypt.compareSync(req.body.password, user.password)) {
         var user_obj = {id: user.id, username: user.username}
         var token = jwt.sign({ id: user.id}, process.env.SECRET)
-        res.status(200).json({token: token, user: user_obj})
+        var userObj = {
+          id: user_obj.id,
+          username: user_obj.username,
+          token: token
+        }
+        res.status(200).json({user: userObj})
       } else if(user){
         res.status(200).json({error: 'Email or password incorrect'})
       } else {
@@ -38,7 +42,7 @@ router.post('/signUp', function(req, res, next) {
     req.body.username && typeof req.body.username === 'string'
     && req.body.email && typeof req.body.email === 'string'
     && req.body.password && typeof req.body.password === 'string'
-    && req.body.notifications && typeof req.body.notifications === 'boolean'
+    && typeof req.body.notifications !== 'undefined' && typeof req.body.notifications === 'boolean'
   ) {
     // hash the password before inserting into the database
     var password_hash = bcrypt.hashSync(req.body.password, 10)
@@ -57,7 +61,7 @@ router.post('/signUp', function(req, res, next) {
         if (
           user[0].id && user[0].username
           && user[0].email && user[0].password
-          && user[0].notifications && user[0].created_at
+          && typeof user[0].notifications !== 'undefined' && user[0].created_at
         ) {
           // prepare object to send back new user's info to the front end with jwt
           try {

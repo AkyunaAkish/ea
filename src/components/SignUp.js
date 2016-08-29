@@ -14,6 +14,7 @@ import {
   CardText,
   FlatButton,
   RaisedButton,
+  Dialog,
   Checkbox
 } from 'material-ui'
 
@@ -53,32 +54,32 @@ class SignUp extends Component {
   onSubmit(userData) {
     this.props.signUp(userData)
     .then((response) => {
-      if (response.data.user) {
+      if (response.payload.data.user) {
         if (
-          response.data.user.id &&
-          response.data.user.token &&
-          response.data.user.username) {
-            window.localStorage['user_id'] = response.data.user.id
-            window.localStorage['username'] = response.data.user.username
-            window.localStorage['token'] = response.data.user.token
+          response.payload.data.user.id &&
+          response.payload.data.user.token &&
+          response.payload.data.user.username) {
+            window.localStorage['user_id'] = response.payload.data.user.id
+            window.localStorage['username'] = response.payload.data.user.username
+            window.localStorage['token'] = response.payload.data.user.token
             const { dispatch } = this.context.store
             const actions = bindActionCreators(this.props.setCurrentTab, dispatch)
             actions(0)
             this.context.router.push('/')
           } else {
-            alert('Signup Failed: server could not add you to the database')
+            this.props.toggleSignUpDialog(true, 'Server could not add you to the database')
           }
-        } else if(response.data.error){
-          alert(`Signup Failed: ${response.data.error}`)
+        } else if(response.payload.data.error){
+          this.props.toggleSignUpDialog(true, `${response.payload.data.error}`)
         }
       })
       .catch((err) => {
-        alert(`Signup Failed: ${err}`)
+        this.props.toggleSignUpDialog(true, `${err}`)
       })
     }
 
-    componentWillMount() {
-      this.props.changeFieldValue('notifications', true)
+    handleDialogClose() {
+      this.props.toggleSignUpDialog(false)
     }
 
     render() {
@@ -124,6 +125,24 @@ class SignUp extends Component {
                 style={raisedButtonStyle} />
             </form>
           </Paper>
+
+          <Dialog
+            title='Signup Error'
+            actions={[
+              <FlatButton
+                label='CLOSE'
+                className='authButton'
+                keyboardFocused={true}
+                onTouchTap={this.handleDialogClose.bind(this)}
+                />
+            ]}
+            modal={false}
+            open={this.props.showSignUpDialog}
+            onRequestClose={this.handleDialogClose.bind(this)}
+            >
+            {this.props.signUpDialogValue}
+          </Dialog>
+
         </div>
       )
     }
@@ -146,18 +165,16 @@ class SignUp extends Component {
     return errors
   }
 
-  function mapDispatchToProps(dispatch) {
+  function mapStateToProps(state) {
     return {
-      changeFieldValue: function(field, value) {
-        dispatch(change('SignUp', field, value))
-      },
-      signUp: actions.signUp,
-      setCurrentTab: actions.setCurrentTab
+      showSignUpDialog: state.material_ui.showSignUpDialog,
+      signUpDialogValue: state.material_ui.signUpDialogValue
     }
   }
 
-  export default connect(null, mapDispatchToProps)(reduxForm({
+  export default connect(mapStateToProps, actions)(reduxForm({
     form: 'SignUp',
     fields: ['username', 'email', 'password', 'confirmpassword', 'notifications'],
-    validate: validate
+    validate: validate,
+    initialValues: {notifications: true}
   })(SignUp))

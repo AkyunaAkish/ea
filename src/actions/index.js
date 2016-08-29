@@ -7,7 +7,9 @@ import {
   SIGN_IN,
   SIGN_UP,
   UPDATE_LOCATION,
-  SET_CURRENT_TAB
+  SET_CURRENT_TAB,
+  TOGGLE_SIGN_IN_DIALOG,
+  TOGGLE_SIGN_UP_DIALOG
 } from './types'
 
 
@@ -25,9 +27,29 @@ export function toggleSideNav(bool) {
   }
 }
 
+export function toggleSignInDialog(bool, dialogValue) {
+  return {
+    type: TOGGLE_SIGN_IN_DIALOG,
+    payload: {
+      bool: bool,
+      dialogValue: dialogValue
+    }
+  }
+}
+
+export function toggleSignUpDialog(bool, dialogValue = '') {
+  console.log('TOGGLE SIGNUP DIALOG', bool, dialogValue);
+  return {
+    type: TOGGLE_SIGN_UP_DIALOG,
+    payload: {
+      bool: bool,
+      dialogValue: dialogValue
+    }
+  }
+}
+
 export function signIn(userInfo) {
   const request = axios.post(`${HOST}/users/signIn`, userInfo)
-
   return {
     type: SIGN_IN,
     payload: request
@@ -36,7 +58,10 @@ export function signIn(userInfo) {
 
 export function signUp(userInfo) {
   const request = axios.post(`${HOST}/users/signUp`, userInfo)
-  return request
+  return {
+    type: SIGN_UP,
+    payload: request
+  }
 }
 
 export function updateLocation(newLocation) {
