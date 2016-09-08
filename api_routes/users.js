@@ -14,7 +14,7 @@ router.post('/signIn', function(req, res, next) {
       email: req.body.email
     })
     .first()
-    .then((user) => {
+    .then(function(user) {
       if (user && bcrypt.compareSync(req.body.password, user.password)) {
         var user_obj = {id: user.id, username: user.username}
         var token = jwt.sign({ id: user.id}, process.env.SECRET)
@@ -27,11 +27,11 @@ router.post('/signIn', function(req, res, next) {
       } else if(user){
         res.status(200).json({error: 'Email or password incorrect'})
       } else {
-        res.status(200).json({error: `User with that email doensn\'t exist in the database`})
+        res.status(200).json({error: `User with that email doesn\'t exist in the database`})
       }
     })
-    .catch((err) => {
-      res.status(200).json({error: `User with that email doensn\'t exist in the database: ${err}`})
+    .catch(function(err) {
+      res.status(200).json({error: `User with that email doesn\'t exist in the database: ${err}`})
     })
   }
 })

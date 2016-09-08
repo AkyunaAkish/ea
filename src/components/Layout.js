@@ -9,6 +9,7 @@ import {
   Drawer,
   MenuItem
 } from 'material-ui'
+import { browserHistory } from 'react-router'
 
 class Layout extends Component {
   constructor(props) {
@@ -57,6 +58,19 @@ class Layout extends Component {
     this.checkDimensions(window.innerWidth)
     window.addEventListener('resize', () => {
       this.checkDimensions(window.innerWidth)
+    })
+    browserHistory.listen((location) => {
+      switch (location.pathname) {
+        case '/':
+        this.props.setCurrentTab(0)
+        break
+        case '/signin':
+        this.props.setCurrentTab(1)
+        break
+        case '/signup':
+        this.props.setCurrentTab(2)
+        break
+      }
     })
   }
 
@@ -158,16 +172,17 @@ function mapStateToProps(state) {
     showTabs: state.material_ui.showTabs,
     showSideNav: state.material_ui.showSideNav,
     routerLocation: state.location_reducer.routerLocation,
-    currentTab: state.material_ui.currentTab
+    currentTab: state.material_ui.currentTab,
+    signedIn: state.user_reducer.signedIn
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    toggleSideNav: actions.toggleSideNav,
-    setCurrentTab: actions.setCurrentTab,
-    toggleTabs: actions.toggleTabs
-  }
-}
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     toggleSideNav: actions.toggleSideNav,
+//     setCurrentTab: actions.setCurrentTab,
+//     toggleTabs: actions.toggleTabs
+//   }
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps())(Layout)
+export default connect(mapStateToProps, actions)(Layout)

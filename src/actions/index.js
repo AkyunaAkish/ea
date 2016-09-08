@@ -6,6 +6,7 @@ import {
   TOGGLE_SIDE_NAV,
   SIGN_IN,
   SIGN_UP,
+  SIGN_OUT,
   UPDATE_LOCATION,
   SET_CURRENT_TAB,
   TOGGLE_SIGN_IN_DIALOG,
@@ -61,6 +62,15 @@ export function signUp(userInfo) {
   return {
     type: SIGN_UP,
     payload: request
+  }
+}
+
+export function signOut() {
+  delete window.localStorage['user_id']
+  delete window.localStorage['username']
+  delete window.localStorage['token']
+  return {
+    type: SIGN_OUT
   }
 }
 
