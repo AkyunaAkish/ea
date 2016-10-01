@@ -1,7 +1,8 @@
 import {
   SIGN_IN,
   SIGN_UP,
-  SIGN_OUT
+  SIGN_OUT,
+  UPDATE_USER_INFO
 } from '../actions/types'
 
 const initialState = {
@@ -25,6 +26,9 @@ export default function(state = initialState, action) {
     ) {
       return { signedIn: false, user: {} }
     }
+    break
+    case UPDATE_USER_INFO:
+    return { ...action.payload }
     break
   }
   return { ...state }

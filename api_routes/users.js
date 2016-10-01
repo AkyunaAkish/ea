@@ -3,6 +3,7 @@ var router = express.Router()
 var knex = require('../db_config/knex')
 var jwt = require('jsonwebtoken')
 var bcrypt = require('bcrypt')
+var validateUser = require('./api_helpers/users/validateUser').validateUser
 
 router.post('/signIn', function(req, res, next) {
   if (
@@ -98,5 +99,16 @@ router.post('/signUp', function(req, res, next) {
     res.status(200).json({ error: 'You did not properly fill out the sign up form' })
   }
 })
+
+router.post('/validateUser', function(req, res, next) {
+  validateUser(req.body)
+  .then(function(resolve) {
+    res.status(200).json(resolve)
+  })
+  .catch(function(reject) {
+    res.status(200).json(reject)
+  })
+})
+
 
 module.exports = router

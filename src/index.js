@@ -18,9 +18,11 @@ import './sass/style.scss'
 
 import injectTapEventPlugin from 'react-tap-event-plugin'
 
+import ReduxThunk from 'redux-thunk'
+
 injectTapEventPlugin()
 
-const createStoreWithMiddleware = process.env.NODE_ENV === 'development' ? applyMiddleware(promise, logger())(createStore) : applyMiddleware(promise)(createStore)
+const createStoreWithMiddleware = process.env.NODE_ENV === 'development' ? applyMiddleware(promise, logger(), ReduxThunk)(createStore) : applyMiddleware(promise, ReduxThunk)(createStore)
 
 ReactDOM.render(
   <MuiThemeProvider>

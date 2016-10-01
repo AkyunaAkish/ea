@@ -9,6 +9,10 @@ img, embed, object, video {
   height: auto;
 }
 
+body {
+  margin: 0;
+}
+
 .navBar {
   background: $slate_blue !important;
   .navLogo {

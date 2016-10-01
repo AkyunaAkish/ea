@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import * as actions from '../actions'
 import { connect } from 'react-redux'
-import { Router } from 'react-router'
 import {
   AppBar,
   Tabs,
@@ -10,26 +9,29 @@ import {
   MenuItem
 } from 'material-ui'
 import { browserHistory } from 'react-router'
+import { determineTab } from '../helpers/determineTab'
 
 class Layout extends Component {
   constructor(props) {
     super(props)
-
-    switch (this.props.location.pathname) {
-      case '/':
-      this.props.setCurrentTab(0)
-      break
-      case '/signin':
-      this.props.setCurrentTab(1)
-      break
-      case '/signup':
-      this.props.setCurrentTab(2)
-      break
-    }
+    this.props.setCurrentTab(determineTab(this.props.location.pathname))
+    this.props.checkIfSignedIn()
+    setTimeout(() => {
+      this.checkToRedirect()
+    }, 500)
   }
 
   static contextTypes = {
     router: PropTypes.object
+  }
+
+  checkToRedirect() {
+    this.props.checkIfSignedIn().payload
+    .then((resolve) => {
+      if(!resolve.payload && this.props.location.pathname === '/profile' || !resolve.payload && this.props.location.pathname === '/addPost') {
+        this.context.router.push('/')
+      }
+    })
   }
 
   checkDimensions(dimensions) {
@@ -39,17 +41,8 @@ class Layout extends Component {
       if (this.props.showSideNav) {
         this.toggleSideNav()
       }
-      switch (this.props.location.pathname) {
-        case '/':
-        this.props.setCurrentTab(0)
-        break
-        case '/signin':
-        this.props.setCurrentTab(1)
-        break
-        case '/signup':
-        this.props.setCurrentTab(2)
-        break
-      }
+      this.props.checkIfSignedIn()
+      this.props.setCurrentTab(determineTab(this.props.location.pathname))
       this.props.toggleTabs(true)
     }
   }
@@ -60,17 +53,8 @@ class Layout extends Component {
       this.checkDimensions(window.innerWidth)
     })
     browserHistory.listen((location) => {
-      switch (location.pathname) {
-        case '/':
-        this.props.setCurrentTab(0)
-        break
-        case '/signin':
-        this.props.setCurrentTab(1)
-        break
-        case '/signup':
-        this.props.setCurrentTab(2)
-        break
-      }
+      this.props.checkIfSignedIn()
+      this.props.setCurrentTab(determineTab(location.pathname))
     })
   }
 
@@ -89,6 +73,10 @@ class Layout extends Component {
     this.props.setCurrentTab(tabValue)
   }
 
+  signOut() {
+    console.log('SIGN OUT CALLED');
+  }
+
   render() {
     const underLineStyle = {
       backgroundColor: 'rgb(201,249,253)'
@@ -102,7 +90,7 @@ class Layout extends Component {
           iconElementRight={!this.props.showTabs ? <img src='images/ElenaAkishLotus.png' className='navLogo'/> : null}
           showMenuIconButton={!this.props.showTabs}
           onLeftIconButtonTouchTap={this.toggleSideNav.bind(this)}
-          children={this.props.showTabs ? [
+          children={this.props.showTabs && !this.props.signedIn ? [
             <Tabs
               key={1}
               inkBarStyle={underLineStyle}
@@ -110,7 +98,7 @@ class Layout extends Component {
               onChange={this.handleTabChange.bind(this)}
               >
               <Tab
-                label='BLOG'
+                label='BLOGS'
                 value={0}
                 className='navTabs'
                 onClick={() => this.switchComponent('/')}
@@ -128,7 +116,33 @@ class Layout extends Component {
                 onClick={() => this.switchComponent('/signup')}
                 />
             </Tabs>
-          ] : []}
+          ] : this.props.signedIn && this.props.showTabs ? [
+            <Tabs
+              key={1}
+              inkBarStyle={underLineStyle}
+              value={this.props.currentTab}
+              onChange={this.handleTabChange.bind(this)}
+              >
+              <Tab
+                label='BLOGS'
+                value={0}
+                className='navTabs'
+                onClick={() => this.switchComponent('/')}
+                />
+              <Tab
+                label='PROFILE'
+                value={1}
+                className='navTabs'
+                onClick={() => this.switchComponent('/profile')}
+                />
+              <Tab
+                label='SIGN OUT'
+                value={2}
+                className='navTabs'
+                onClick={() => this.signOut()}
+                />
+            </Tabs>
+          ] : null}
           />
 
         <Drawer
@@ -146,7 +160,7 @@ class Layout extends Component {
           <MenuItem
             className='sideNavItem'
             onClick={() => this.switchComponent('/')}>
-            BLOG
+            BLOGS
           </MenuItem>
           <MenuItem
             className='sideNavItem'
@@ -176,13 +190,5 @@ function mapStateToProps(state) {
     signedIn: state.user_reducer.signedIn
   }
 }
-
-// function mapDispatchToProps(dispatch) {
-//   return {
-//     toggleSideNav: actions.toggleSideNav,
-//     setCurrentTab: actions.setCurrentTab,
-//     toggleTabs: actions.toggleTabs
-//   }
-// }
 
 export default connect(mapStateToProps, actions)(Layout)
