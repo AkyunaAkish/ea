@@ -74,7 +74,13 @@ class Layout extends Component {
   }
 
   signOut() {
-    console.log('SIGN OUT CALLED');
+    delete window.localStorage['user_id']
+    delete window.localStorage['username']
+    delete window.localStorage['token']
+    this.context.router.push('/')
+    if (this.props.showSideNav) {
+      this.toggleSideNav()
+    }
   }
 
   render() {
@@ -101,19 +107,19 @@ class Layout extends Component {
                 label='BLOGS'
                 value={0}
                 className='navTabs'
-                onClick={() => this.switchComponent('/')}
+                onActive={() => this.switchComponent('/')}
                 />
               <Tab
                 label='SIGN IN'
                 value={1}
                 className='navTabs'
-                onClick={() => this.switchComponent('/signin')}
+                onActive={() => this.switchComponent('/signin')}
                 />
               <Tab
                 label='SIGN UP'
                 value={2}
                 className='navTabs'
-                onClick={() => this.switchComponent('/signup')}
+                onActive={() => this.switchComponent('/signup')}
                 />
             </Tabs>
           ] : this.props.signedIn && this.props.showTabs ? [
@@ -127,19 +133,19 @@ class Layout extends Component {
                 label='BLOGS'
                 value={0}
                 className='navTabs'
-                onClick={() => this.switchComponent('/')}
+                onActive={() => this.switchComponent('/')}
                 />
               <Tab
                 label='PROFILE'
                 value={1}
                 className='navTabs'
-                onClick={() => this.switchComponent('/profile')}
+                onActive={() => this.switchComponent('/profile')}
                 />
               <Tab
                 label='SIGN OUT'
                 value={2}
                 className='navTabs'
-                onClick={() => this.signOut()}
+                onActive={() => this.signOut()}
                 />
             </Tabs>
           ] : null}
@@ -150,29 +156,64 @@ class Layout extends Component {
           docked={false}
           onRequestChange={() => this.toggleSideNav()}
           containerClassName='sideNav'
-          >
-          <MenuItem
-            className='sideNavItem'
-            onClick={this.toggleSideNav.bind(this)}
-            id='closeNavItem'>
-            <p className='iconText'>CLOSE MENU</p>
-          </MenuItem>
-          <MenuItem
-            className='sideNavItem'
-            onClick={() => this.switchComponent('/')}>
-            BLOGS
-          </MenuItem>
-          <MenuItem
-            className='sideNavItem'
-            onClick={() => this.switchComponent('/signin')}>
-            SIGN IN
-          </MenuItem>
-          <MenuItem
-            className='sideNavItem'
-            onClick={() => this.switchComponent('/signup')}>
-            SIGN UP
-          </MenuItem>
-        </Drawer>
+          children={!this.props.signedIn ? [
+            <div key={0}>
+              <MenuItem
+                key={1}
+                className='sideNavItem'
+                onTouchTap={this.toggleSideNav.bind(this)}
+                id='closeNavItem'>
+                <p className='iconText'>CLOSE MENU</p>
+              </MenuItem>
+              <MenuItem
+                key={2}
+                className='sideNavItem'
+                onTouchTap={() => this.switchComponent('/')}>
+                BLOGS
+              </MenuItem>
+              <MenuItem
+                key={3}
+                className='sideNavItem'
+                onTouchTap={() => this.switchComponent('/signin')}>
+                SIGN IN
+              </MenuItem>
+              <MenuItem
+                key={4}
+                className='sideNavItem'
+                onTouchTap={() => this.switchComponent('/signup')}>
+                SIGN UP
+              </MenuItem>
+            </div>
+          ] : [
+            <div key={0}>
+              <MenuItem
+                key={1}
+                className='sideNavItem'
+                onTouchTap={this.toggleSideNav.bind(this)}
+                id='closeNavItem'>
+                <p className='iconText'>CLOSE MENU</p>
+              </MenuItem>
+              <MenuItem
+                key={2}
+                className='sideNavItem'
+                onTouchTap={() => this.switchComponent('/')}>
+                BLOGS
+              </MenuItem>
+              <MenuItem
+                key={3}
+                className='sideNavItem'
+                onTouchTap={() => this.switchComponent('/profile')}>
+                PROFILE
+              </MenuItem>
+              <MenuItem
+                key={4}
+                className='sideNavItem'
+                onTouchTap={() => this.signOut()}>
+                SIGN OUT
+              </MenuItem>
+            </div>
+          ]}
+          />
 
         {this.props.children}
 
