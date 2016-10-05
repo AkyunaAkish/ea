@@ -28,7 +28,7 @@ class Layout extends Component {
   checkToRedirect() {
     this.props.checkIfSignedIn().payload
     .then((resolve) => {
-      if(!resolve.payload && this.props.location.pathname === '/profile' || !resolve.payload && this.props.location.pathname === '/addPost') {
+      if(!resolve.payload && this.props.location.pathname === '/profile' || !resolve.payload && this.props.location.pathname === '/addblog') {
         this.context.router.push('/')
       }
     })
@@ -54,7 +54,7 @@ class Layout extends Component {
     })
     browserHistory.listen((location) => {
       this.props.checkIfSignedIn()
-      this.props.setCurrentTab(determineTab(location.pathname))
+      location.pathname !== '/addblog' ? this.props.setCurrentTab(determineTab(location.pathname)) : null
     })
   }
 
@@ -74,12 +74,20 @@ class Layout extends Component {
   }
 
   signOut() {
-    delete window.localStorage['user_id']
-    delete window.localStorage['username']
-    delete window.localStorage['token']
-    this.context.router.push('/')
-    if (this.props.showSideNav) {
-      this.toggleSideNav()
+    const signOut = () => {
+      delete window.localStorage['user_id']
+      delete window.localStorage['username']
+      delete window.localStorage['token']
+      this.context.router.push('/')
+      if (this.props.showSideNav) {
+        this.toggleSideNav()
+      }
+    }
+
+    if (this.props.location.pathname === '/profile' && confirm('If you sign out you will lose the changes you have made')) {
+      signOut()
+    } else {
+      signOut()
     }
   }
 

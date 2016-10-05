@@ -7,6 +7,7 @@ import Blog from './components/Blog'
 import SignIn from './components/SignIn'
 import SignUp from './components/SignUp'
 import Profile from './components/Profile'
+import AddBlog from './components/AddBlog'
 
 export default (
   <Route path="/" component={Layout}>
@@ -14,6 +15,7 @@ export default (
     <Route path='signin' component={SignIn} />
     <Route path='signup' component={SignUp} />
     <Route path='profile' component={Profile} />
+    <Route path='addblog' component={AddBlog} />
     <Route path='blogs/:title' component={Blog} />
     <Redirect from="*" to="/" />
   </Route>

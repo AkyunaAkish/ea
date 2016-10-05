@@ -1,0 +1,79 @@
+@import '../utils/variables';
+
+html,
+body {
+  //margin:0;
+  //padding:0;
+  position: absolute;
+  height:100% !important;
+  width:100% !important;
+}
+
+.addBlogContainer {
+  min-height: 100%;
+  position: relative;
+  .addBlogPaper {
+    margin: 0 auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    width: 80%;
+    .paperHeaderContainer {
+      width: 100%;
+      background: $space_cadet;
+      text-align: center;
+      padding-top: 1px;
+      padding-bottom: 1px;
+      h1 {
+        color: $diamond;
+      }
+    }
+  }
+}
+
+.addBlogMenu {
+  display: flex !important;
+  width: 100%;
+  .addBlogbutton {
+    display: inline !important;
+  }
+}
+
+.submitButtonContainer {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 10px;
+  .submitButton {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 1rem;
+    background-color: #efefef;
+    width: 30% !important;
+    margin: 0 !important;
+  }
+}
+
+.addBlogContainer {
+  margin-top: 80px;
+}
+
+.submitBarTabs {
+  border: none !important;
+}
+
+.secondaryNavBar {
+  position: fixed !important;
+  top: 0 !important;
+  overflowY: hidden !important;
+  margin-top: 65px;
+}
+.deleteButtonContainer {
+  width: 100%;
+  text-align: center;
+  .formComponentDeleteButton {
+    margin: 0 !important;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+  }
+}

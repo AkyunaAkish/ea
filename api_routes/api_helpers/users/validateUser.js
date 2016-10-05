@@ -14,6 +14,7 @@ exports.validateUser = function(body) {
         })
         .then(function(user){
           if (user.length > 0 && user[0].username.toLowerCase() === body.username) {
+            delete user[0].password
             resolve({ success: decoded, user: user[0] })
           } else {
             throw Error('Token doesn\'t match user');

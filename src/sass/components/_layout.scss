@@ -11,10 +11,14 @@ img, embed, object, video {
 
 body {
   margin: 0;
+  padding-top: 70px;
 }
 
 .navBar {
   background: $slate_blue !important;
+  position: fixed !important;
+  top: 0 !important;
+  overflowY: hidden !important;
   .navLogo {
     height: 60px;
     vertical-align: middle;

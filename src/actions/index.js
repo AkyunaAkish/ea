@@ -10,7 +10,11 @@ import {
   SIGN_OUT,
   UPDATE_USER_INFO,
   TOGGLE_SIGN_IN_DIALOG,
-  TOGGLE_SIGN_UP_DIALOG
+  TOGGLE_SIGN_UP_DIALOG,
+  UPDATE_BLOG_DETAILS,
+  ADD_BLOG_SECTION,
+  ADD_FORM_COMPONENT,
+  DELETE_FORM_COMPONENT
 } from './types'
 
 export function toggleTabs(bool) {
@@ -83,6 +87,34 @@ export function updateUser(userInfo) {
   return {
     type: UPDATE_USER_INFO,
     payload: userInfo
+  }
+}
+
+export function updateBlogDetails(blogDetails) {
+  return {
+    type: UPDATE_BLOG_DETAILS,
+    payload: blogDetails
+  }
+}
+
+export function addBlogSection(blogSection) {
+  return {
+    type: ADD_BLOG_SECTION,
+    payload: blogSection
+  }
+}
+
+export function addFormComponent(formComponent) {
+  return {
+    type: ADD_FORM_COMPONENT,
+    payload: formComponent
+  }
+}
+
+export function deleteFormComponent(formComponentID) {
+  return {
+    type: DELETE_FORM_COMPONENT,
+    payload: formComponentID
   }
 }
 
