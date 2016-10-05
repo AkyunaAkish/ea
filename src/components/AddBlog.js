@@ -31,7 +31,7 @@ class AddBlog extends Component {
 
   confirmOnPageExit(e) {
     e = e || window.event
-    const message = 'If you navigate away from this page you will lose the changes you have made'
+    const message = 'If you navigate away from this page you will lose the changes you have made, navigate anyways?'
     if (e) {
       e.returnValue = message
     }
@@ -43,7 +43,7 @@ class AddBlog extends Component {
 
     this.props.router.setRouteLeaveHook(this.props.route, () => {
       this.props.setCurrentTab(12)
-      return 'If you navigate away from this page you will lose the changes you have made'
+      return 'If you navigate away from this page you will lose the changes you have made, navigate anyways?'
     })
 
     this.checkToRedirect()

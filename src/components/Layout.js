@@ -84,8 +84,11 @@ class Layout extends Component {
       }
     }
 
-    if (this.props.location.pathname === '/profile' && confirm('If you sign out you will lose the changes you have made')) {
-      signOut()
+    if (this.props.location.pathname === '/addblog') {
+      if (confirm('If you sign out you will lose the changes you have made, sign out anyways?')) {
+        signOut()
+      }
+      this.props.setCurrentTab(12)
     } else {
       signOut()
     }

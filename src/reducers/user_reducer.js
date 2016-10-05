@@ -13,10 +13,14 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case SIGN_IN:
-    return { signedIn: true, user: action.payload.data.user }
+    if (action.payload.data.user) {
+      return { signedIn: true, user: action.payload.data.user }
+    }
     break
     case SIGN_UP:
-    return { signedIn: true, user: action.payload.data.user }
+    if (action.payload.data.user) {
+      return { signedIn: true, user: action.payload.data.user }
+    }
     break
     case SIGN_OUT:
     if (
