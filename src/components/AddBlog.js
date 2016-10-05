@@ -40,13 +40,13 @@ class AddBlog extends Component {
 
   componentWillMount() {
     window.onbeforeunload = this.confirmOnPageExit
-
-    this.props.router.setRouteLeaveHook(this.props.route, () => {
-      this.props.setCurrentTab(12)
-      return 'If you navigate away from this page you will lose the changes you have made, navigate anyways?'
+    document.body.style.display = 'none'
+    this.checkToRedirect().then(() => {
+      this.props.router.setRouteLeaveHook(this.props.route, () => {
+        this.props.setCurrentTab(12)
+        return 'If you navigate away from this page you will lose the changes you have made, navigate anyways?'
+      })
     })
-
-    this.checkToRedirect()
   }
 
   componentWillUnmount() {
@@ -54,11 +54,15 @@ class AddBlog extends Component {
   }
 
   checkToRedirect() {
-    this.props.checkIfSignedIn().payload
-    .then((resolve) => {
-      if(!resolve.payload || window.localStorage['username'] !== 'elena') {
-        this.context.router.push('/')
-      }
+    return new Promise((resolve, reject) => {
+      resolve(this.props.checkIfSignedIn().payload
+      .then((resolve) => {
+        if(!resolve.payload || window.localStorage['username'] !== 'elena') {
+          this.context.router.push('/')
+        }
+        document.body.style.display = 'block'
+      }))
+
     })
   }
 
