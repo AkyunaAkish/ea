@@ -55,6 +55,9 @@ class Layout extends Component {
     browserHistory.listen((location) => {
       this.props.checkIfSignedIn()
       location.pathname !== '/addblog' ? this.props.setCurrentTab(determineTab(location.pathname)) : null
+      if (location.pathname === '/addblog') {
+        this.props.setCurrentTab(12)
+      }
     })
   }
 
