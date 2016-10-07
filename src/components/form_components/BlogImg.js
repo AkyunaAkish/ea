@@ -10,8 +10,11 @@ import {
 
 class BlogImg extends Component {
 
-  inputChange(type,e, val) {
-    console.log(type, e, val);
+  inputChange(e, val) {
+    this.props.updateFormComponent({
+      id: this.props.id,
+      content: val
+    })
   }
 
   render() {
@@ -25,7 +28,7 @@ class BlogImg extends Component {
       <div className='addBlogContainer'>
         <Paper className='addBlogPaper' zDepth={5}>
           <div className='paperHeaderContainer'>
-            <h1>Image URL</h1>
+            <h1>Image URL Section: #{this.props.index}</h1>
           </div>
           <TextField
             className='authTextField'

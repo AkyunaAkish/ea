@@ -12,9 +12,11 @@ import {
   TOGGLE_SIGN_IN_DIALOG,
   TOGGLE_SIGN_UP_DIALOG,
   UPDATE_BLOG_DETAILS,
-  ADD_BLOG_SECTION,
   ADD_FORM_COMPONENT,
-  DELETE_FORM_COMPONENT
+  UPDATE_FORM_COMPONENT,
+  DELETE_FORM_COMPONENT,
+  ADD_ERROR,
+  GET_ALL_BLOGS
 } from './types'
 
 export function toggleTabs(bool) {
@@ -66,6 +68,14 @@ export function toggleSignUpDialog(bool, dialogValue = '') {
   }
 }
 
+export function getAllBlogs() {
+  const request = axios.get(`${HOST}/blogs`)
+  return {
+    type: GET_ALL_BLOGS,
+    payload: request
+  }
+}
+
 export function signUp(userInfo) {
   const request = axios.post(`${HOST}/users/signup`, userInfo)
   return {
@@ -97,17 +107,24 @@ export function updateBlogDetails(blogDetails) {
   }
 }
 
-export function addBlogSection(blogSection) {
-  return {
-    type: ADD_BLOG_SECTION,
-    payload: blogSection
-  }
-}
-
 export function addFormComponent(formComponent) {
   return {
     type: ADD_FORM_COMPONENT,
     payload: formComponent
+  }
+}
+
+export function updateFormComponent(newContent) {
+  return {
+    type: UPDATE_FORM_COMPONENT,
+    payload: newContent
+  }
+}
+
+export function addError(error) {
+  return {
+    type: ADD_ERROR,
+    payload: error
   }
 }
 

@@ -1,0 +1,13 @@
+@import '../utils/variables';
+
+.blogGridItem {
+  text-align: center;
+  margin-bottom: 10px !important;
+  background: $space_cadet;
+  img {
+    min-width: 100%;
+  }
+  h3 {
+    color: $diamond;
+  }
+}

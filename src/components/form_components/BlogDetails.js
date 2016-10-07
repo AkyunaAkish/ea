@@ -36,7 +36,7 @@ class BlogDetails extends Component {
       <div className='addBlogContainer'>
         <Paper className='addBlogPaper' zDepth={5}>
           <div className='paperHeaderContainer'>
-            <h1>Blog Details</h1>
+            <h1>Blog Details Section: #1</h1>
           </div>
           <TextField
             className='authTextField'

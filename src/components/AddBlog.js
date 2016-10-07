@@ -17,12 +17,17 @@ import {
 import { withRouter } from 'react-router'
 
 import generateID from '../helpers/generateID'
+import formatBlog from '../helpers/formatBlog'
+import saveBlog from '../helpers/saveBlog'
+import validateUser from '../helpers/validateUser'
 
 import BlogDetails from './form_components/BlogDetails'
 import BlogHeader from './form_components/BlogHeader'
 import BlogImg from './form_components/BlogImg'
 import BlogLink from './form_components/BlogLink'
 import BlogParagraph from './form_components/BlogParagraph'
+
+import AddBlogError from './AddBlogError'
 
 class AddBlog extends Component {
   static contextTypes = {
@@ -81,28 +86,32 @@ class AddBlog extends Component {
       this.props.addFormComponent({
         id: generateID(),
         type: 'Header',
-        component: BlogHeader
+        component: BlogHeader,
+        content: ''
       })
       break
       case 'p':
       this.props.addFormComponent({
         id: generateID(),
         type: 'Paragraph',
-        component: BlogParagraph
+        component: BlogParagraph,
+        content: ''
       })
       break
       case 'a':
       this.props.addFormComponent({
         id: generateID(),
         type: 'Link',
-        component: BlogLink
+        component: BlogLink,
+        content: ''
       })
       break
       case 'img':
       this.props.addFormComponent({
         id: generateID(),
         type: 'Image',
-        component: BlogImg
+        component: BlogImg,
+        content: ''
       })
       break
     }
@@ -115,10 +124,10 @@ class AddBlog extends Component {
   }
 
   renderFormComponents() {
-    return this.props.formComponents.map((formComponent) => {
+    return this.props.formComponents.map((formComponent, i) => {
       const Component = formComponent.component
       return (
-        <Component key={formComponent.id} deleteButton={
+        <Component key={formComponent.id} id={formComponent.id} index={i+2} deleteButton={
             <FlatButton
               key={formComponent.id}
               label={`DELETE ${formComponent.type}`}
@@ -128,6 +137,33 @@ class AddBlog extends Component {
               />}/>
           )
         })
+      }
+
+      insertBlog() {
+        formatBlog(this.props.blogDetails, this.props.formComponents)
+        .then((resolved) => {
+          this.props.addError('')
+          validateUser()
+          .then((validated) => {
+            saveBlog(resolved)
+            .then((result) => {
+              console.log('RESULT IN SAVE BLOG', result)
+            })
+            .catch((err) => {
+              this.props.addError(err)
+            })
+          })
+          .catch((invalid) => {
+            this.props.addError(invalid)
+          })
+        })
+        .catch((rejected) => {
+          this.props.addError(rejected)
+        })
+      }
+
+      renderError() {
+        return this.props.error.length > 0 ?  <AddBlogError /> : null
       }
 
       render() {
@@ -174,13 +210,15 @@ class AddBlog extends Component {
 
             {this.renderFormComponents()}
 
+            {this.renderError()}
+
             <div className='submitButtonContainer'>
               <FlatButton
                 key={0}
                 label='SUBMIT'
                 className='authButton submitButton'
                 keyboardFocused={true}
-                onTouchTap={() => alert('yo')}
+                onTouchTap={this.insertBlog.bind(this)}
                 />
             </div>
 
@@ -191,7 +229,9 @@ class AddBlog extends Component {
 
     function mapStateToProps(state) {
       return {
-        formComponents: state.add_blog_reducer.formComponents
+        blogDetails: state.add_blog_reducer.blogDetails,
+        formComponents: state.add_blog_reducer.formComponents,
+        error: state.add_blog_reducer.error
       }
     }
 

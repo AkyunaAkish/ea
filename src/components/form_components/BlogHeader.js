@@ -10,8 +10,11 @@ import {
 
 class BlogHeader extends Component {
 
-  inputChange(type,e, val) {
-    console.log(type, e, val);
+  inputChange(e, val) {
+    this.props.updateFormComponent({
+      id: this.props.id,
+      content: val
+    })
   }
 
   render() {
@@ -25,7 +28,7 @@ class BlogHeader extends Component {
       <div className='addBlogContainer'>
         <Paper className='addBlogPaper' zDepth={5}>
           <div className='paperHeaderContainer'>
-            <h1>Header</h1>
+            <h1>Header Section: #{this.props.index}</h1>
           </div>
           <TextField
             className='authTextField'
