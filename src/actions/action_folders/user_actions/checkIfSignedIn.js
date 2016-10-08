@@ -4,7 +4,6 @@ import updateUser from './updateUserInfo'
 
 export default function() {
   return (dispatch) => {
-    console.log('check if signed in...', dispatch);
     if (
       !window.localStorage['user_id'] &&
       !window.localStorage['username'] &&
