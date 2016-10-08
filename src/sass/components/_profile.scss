@@ -1,0 +1,45 @@
+@import '../utils/variables';
+
+.profileContainer {
+  min-height: 100%;
+  position: relative;
+  .profilePaper {
+    margin: 0 auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    width: 80%;
+    text-align: center;
+
+    h3 {
+      text-align: center;
+      color: $space_cadet;
+    }
+
+    .profileDetailContainer {
+      width: 100%;
+      .profileButton {
+        margin: 0 !important;
+        margin-bottom: 5px !important;
+      }
+    }
+
+    .paperHeaderContainer {
+      width: 100%;
+      background: $space_cadet;
+      text-align: center;
+      padding-top: 1px;
+      padding-bottom: 1px;
+      h1 {
+        color: $diamond;
+      }
+    }
+  }
+}
+
+.profileCheckboxContainer {
+  width: 100% !important;
+  .profileCheckbox {
+    width: 0 !important;
+    margin: 0 auto;
+  }
+}

@@ -41,7 +41,7 @@ body {
 .sideNav {
   background: $slate_blue !important;
   .sideNavItem {
-    border-bottom: 2px solid $diamond !important;
+    border-bottom: 1px solid $slate_blue !important;
     background: $space_cadet !important;
     color: $diamond !important;
     &:hover {

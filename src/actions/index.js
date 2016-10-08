@@ -1,189 +1,74 @@
-import axios from 'axios'
-import { HOST } from '../helpers/constants'
+// material ui actions
+import toggleTabs from './action_folders/material_ui_actions/toggleTabs'
+import setCurrentTab from './action_folders/material_ui_actions/setCurrentTab'
+import toggleSideNav from './action_folders/material_ui_actions/toggleSideNav'
+import toggleSignInDialog from './action_folders/material_ui_actions/toggleSignInDialog'
+import toggleSignUpDialog from './action_folders/material_ui_actions/toggleSignUpDialog'
 
-import {
-  TOGGLE_TABS,
-  SET_CURRENT_TAB,
-  TOGGLE_SIDE_NAV,
-  SIGN_IN,
-  SIGN_UP,
-  SIGN_OUT,
-  UPDATE_USER_INFO,
-  TOGGLE_SIGN_IN_DIALOG,
-  TOGGLE_SIGN_UP_DIALOG,
-  UPDATE_BLOG_DETAILS,
-  ADD_FORM_COMPONENT,
-  UPDATE_FORM_COMPONENT,
-  DELETE_FORM_COMPONENT,
-  ADD_ERROR,
-  GET_ALL_BLOGS
-} from './types'
-
-export function toggleTabs(bool) {
-  return {
-    type: TOGGLE_TABS,
-    payload: bool
-  }
+export {
+  toggleTabs,
+  setCurrentTab,
+  toggleSideNav,
+  toggleSignInDialog,
+  toggleSignUpDialog
 }
 
-export function setCurrentTab(currentTab) {
-  return {
-    type: SET_CURRENT_TAB,
-    payload: currentTab
-  }
+// user actions
+import signUp from './action_folders/user_actions/signUp'
+import signIn from './action_folders/user_actions/signIn'
+import signOut from './action_folders/user_actions/signOut'
+import updateUser from './action_folders/user_actions/updateUserInfo'
+import checkIfSignedIn from './action_folders/user_actions/checkIfSignedIn'
+
+export {
+  signUp,
+  signIn,
+  signOut,
+  updateUser,
+  checkIfSignedIn
 }
 
-export function toggleSideNav(bool) {
-  return {
-    type: TOGGLE_SIDE_NAV,
-    payload: bool
-  }
+// blog actions
+import getAllBlogs from './action_folders/blog_actions/getAllBlogs'
+
+export {
+  getAllBlogs
 }
 
-export function signIn(userInfo) {
-  const request = axios.post(`${HOST}/users/signin`, userInfo)
-  return {
-    type: SIGN_IN,
-    payload: request
-  }
+// add blog actions
+import addError from './action_folders/add_blog_actions/addError'
+import addFormComponent from './action_folders/add_blog_actions/addFormComponent'
+import deleteFormComponent from './action_folders/add_blog_actions/deleteFormComponent'
+import updateBlogDetails from './action_folders/add_blog_actions/updateBlogDetails'
+import updateFormComponent from './action_folders/add_blog_actions/updateFormComponent'
+
+export {
+  addError,
+  addFormComponent,
+  deleteFormComponent,
+  updateBlogDetails,
+  updateFormComponent
 }
 
-export function toggleSignInDialog(bool, dialogValue) {
-  return {
-    type: TOGGLE_SIGN_IN_DIALOG,
-    payload: {
-      bool: bool,
-      dialogValue: dialogValue
-    }
-  }
-}
+// profile actions
+import editEmail from './action_folders/profile_actions/editEmail'
+import editUsername from './action_folders/profile_actions/editUsername'
+import editNotifications from './action_folders/profile_actions/editNotifications'
+import toggleEditEmail from './action_folders/profile_actions/toggleEditEmail'
+import toggleEditUsername from './action_folders/profile_actions/toggleEditUsername'
+import toggleEditNotifications from './action_folders/profile_actions/toggleEditNotifications'
+import updateEditEmailValue from './action_folders/profile_actions/updateEditEmailValue'
+import updateEditUsernameValue from './action_folders/profile_actions/updateEditUsernameValue'
+import updateEditNotificationsValue from './action_folders/profile_actions/updateEditNotificationsValue'
 
-export function toggleSignUpDialog(bool, dialogValue = '') {
-  return {
-    type: TOGGLE_SIGN_UP_DIALOG,
-    payload: {
-      bool: bool,
-      dialogValue: dialogValue
-    }
-  }
-}
-
-export function getAllBlogs() {
-  const request = axios.get(`${HOST}/blogs`)
-  return {
-    type: GET_ALL_BLOGS,
-    payload: request
-  }
-}
-
-export function signUp(userInfo) {
-  const request = axios.post(`${HOST}/users/signup`, userInfo)
-  return {
-    type: SIGN_UP,
-    payload: request
-  }
-}
-
-export function signOut() {
-  delete window.localStorage['user_id']
-  delete window.localStorage['username']
-  delete window.localStorage['token']
-  return {
-    type: SIGN_OUT
-  }
-}
-
-export function updateUser(userInfo) {
-  return {
-    type: UPDATE_USER_INFO,
-    payload: userInfo
-  }
-}
-
-export function updateBlogDetails(blogDetails) {
-  return {
-    type: UPDATE_BLOG_DETAILS,
-    payload: blogDetails
-  }
-}
-
-export function addFormComponent(formComponent) {
-  return {
-    type: ADD_FORM_COMPONENT,
-    payload: formComponent
-  }
-}
-
-export function updateFormComponent(newContent) {
-  return {
-    type: UPDATE_FORM_COMPONENT,
-    payload: newContent
-  }
-}
-
-export function addError(error) {
-  return {
-    type: ADD_ERROR,
-    payload: error
-  }
-}
-
-export function deleteFormComponent(formComponentID) {
-  return {
-    type: DELETE_FORM_COMPONENT,
-    payload: formComponentID
-  }
-}
-
-export function checkIfSignedIn() {
-  return (dispatch) => {
-    if (
-      !window.localStorage['user_id'] &&
-      !window.localStorage['username'] &&
-      !window.localStorage['token']
-    ) {
-      dispatch(updateUser({
-        signedIn: false,
-        user: {}
-      }))
-      return {
-        type: 'none',
-        payload: new Promise((resolve, reject) => {
-          resolve({ payload: false })
-        })
-      }
-    }
-    const userInfo = {
-      user_id: window.localStorage['user_id'],
-      username: window.localStorage['username'],
-      token: window.localStorage['token']
-    }
-    return {
-      type: 'none',
-      payload: axios.post(`${HOST}/users/validateUser`, userInfo)
-      .then((response) => {
-        if (response.data.success) {
-          dispatch(updateUser({
-            signedIn: true,
-            user: response.data.user
-          }))
-          return {
-            type: 'none',
-            payload: true
-          }
-        } else {
-          return {
-            type: 'none',
-            payload: false
-          }
-        }
-      })
-      .catch((err) => {
-        return {
-          type: 'none',
-          payload: false
-        }
-      })
-    }
-  }
+export {
+  editEmail,
+  editUsername,
+  editNotifications,
+  toggleEditEmail,
+  toggleEditUsername,
+  toggleEditNotifications,
+  updateEditEmailValue,
+  updateEditUsernameValue,
+  updateEditNotificationsValue
 }

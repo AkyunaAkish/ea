@@ -54,6 +54,7 @@ class Layout extends Component {
     })
     browserHistory.listen((location) => {
       this.props.checkIfSignedIn()
+      this.checkToRedirect()
       location.pathname !== '/addblog' ? this.props.setCurrentTab(determineTab(location.pathname)) : null
       if (location.pathname === '/addblog') {
         this.props.setCurrentTab(12)
@@ -240,7 +241,6 @@ function mapStateToProps(state) {
   return {
     showTabs: state.material_ui.showTabs,
     showSideNav: state.material_ui.showSideNav,
-    routerLocation: state.location_reducer.routerLocation,
     currentTab: state.material_ui.currentTab,
     signedIn: state.user_reducer.signedIn
   }
